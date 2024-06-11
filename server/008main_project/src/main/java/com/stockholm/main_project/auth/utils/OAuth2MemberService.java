@@ -27,7 +27,7 @@ public class OAuth2MemberService extends DefaultOAuth2UserService {
         this.memberRepository = memberRepository;
         this.httpSession = httpSession;
     }
-
+    // OAuth2 사용자 정보를 로드
     @Override
     public OAuth2User loadUser(OAuth2UserRequest memberRequest) throws OAuth2AuthenticationException {
         OAuth2UserService<OAuth2UserRequest,OAuth2User> delegate = new DefaultOAuth2UserService();
@@ -48,6 +48,7 @@ public class OAuth2MemberService extends DefaultOAuth2UserService {
 
     }
 
+    // OAuth2 사용자 정보를 저장
     private Member saveOAuth(OAuthAttributes attributes) {
         Member member = memberRepository.findByEmail(attributes.getEmail())
                 .orElse(attributes.toEntity());

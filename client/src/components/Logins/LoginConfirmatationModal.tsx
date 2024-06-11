@@ -16,7 +16,7 @@ const LoginConfirmationModal: React.FC<LoginConfirmationProps> = ({ onClose }) =
     <ModalBackground onKeyDown={handleKeyDown} tabIndex={0}>
       <ModalContainer>
         <Message>{messageText}</Message>
-        <Logo src={StockHolmLogo} alt="StockHolm Logo" />
+        <Logo src={StockHolmLogo} alt="StockHolm Logo"/>
         <ConfirmButton onClick={onClose}>{confirmText}</ConfirmButton>
       </ModalContainer>
     </ModalBackground>

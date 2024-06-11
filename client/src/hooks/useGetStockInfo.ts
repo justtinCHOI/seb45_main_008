@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useQuery } from "react-query";
 import axios from "axios";
 
+//useGetStockInfo : 현재시각에 가장 30분 단위에 패칭을 하고 그후 10분단위로 AXIOS를 호출로 회사 정보 가져오기.
 const useGetStockInfo = (companyId: number) => {
   const [autoRefetch, setAutoRefetch] = useState(false);
 
@@ -31,9 +32,8 @@ const useGetStockInfo = (companyId: number) => {
   }, []);
 
   const { data, isLoading, error, refetch } = useQuery(`stockInfo${companyId} ${queryKey}}`, () => getStockInfo(companyId), {
-    enabled: true,
+    enabled: true, //쿼리가 활성화 상태인지 여부, 항상 true로 설정
     refetchInterval: autoRefetch ? 60000 * 10 : false, // 정각 혹은 30분에 맞춰서 10분 마다 데이터 리패칭
-
   });
 
   return { stockInfo: data, stockInfoLoading: isLoading, stockInfoError: error };

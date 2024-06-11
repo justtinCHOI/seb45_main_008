@@ -31,39 +31,39 @@ public class StockAsBiService {
         this.companyService = companyService;
     }
 
+    //StockAsBi 저장
     public StockAsBi saveStockAsBi(StockAsBi stockAsBi) {
         return stockAsBiRepository.save(stockAsBi);
     }
 
+    //저장되어 있는 회사코드 -> AsBi 정보 update
+
     public void updateStockAsBi() throws InterruptedException {
-        List<Company> companyList = companyService.findCompanies();
+        List<Company> companyList = companyService.findCompanies(); //모든 회사
 
         for(int i = 0; i < companyList.size(); i++) {
             // 주식 코드로 회사 불러오기
             Company company = companyService.findCompanyByCode(companyList.get(i).getCode());
-            // api 호출하기
+            // 해당 회사의 asbi api호출하기
             StockasbiDataDto stockasbiDataDto = apiCallService.getStockasbiDataFromApi(company.getCode());
-            // mapper로 정리 된 값 받기
+            // StockasbiDataDto -> StockAsBiOutput1 -> StockAsBi
             StockAsBi stockAsBi = apiMapper.stockAsBiOutput1ToStockAsBi(stockasbiDataDto.getOutput1());
-
-            // 회사 등록
+            // 새로운 stockAsBi의 회사 등록
             stockAsBi.setCompany(company);
-            // 호가 컬럼을 새로운 호가 컬럼으로 변경한다
+            // 호가 컬럼을 새로운 호가 컬럼으로 변경
             StockAsBi oldStockAsBi = company.getStockAsBi();
             stockAsBi.setStockAsBiId(oldStockAsBi.getStockAsBiId());
             company.setStockAsBi(stockAsBi);
-
-            // 저장한다
+            // 저장
             companyService.saveCompany(company);
 
             Thread.sleep(500);
         }
     }
-
+    //companyId -> 회사의 StockAsBi 정보
     public StockAsBi getStockAsBi(long companyId) {
         Optional<StockAsBi> stock = stockAsBiRepository.findById(companyId);
         stock.orElseThrow(() -> new BusinessLogicException(ExceptionCode.STOCKASBI_NOT_FOUND));
-
         return stock.get();
     }
 

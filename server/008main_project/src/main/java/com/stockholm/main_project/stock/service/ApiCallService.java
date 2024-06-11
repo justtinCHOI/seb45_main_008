@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 @Service
@@ -70,6 +71,9 @@ public class ApiCallService {
         headers.add("appsecret", APP_SECRET);
         headers.add("tr_id", "FHKST01010200");
 
+        //FID_COND_MRKT_DIV_CODE : 시장 분류 코드 (J : 주식)
+        //FID_INPUT_ISCD : 종목번호 
+
         String uri = STOCKASBI_URL + "?FID_COND_MRKT_DIV_CODE=J&FID_INPUT_ISCD=" + stockCode;
 
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
@@ -95,6 +99,12 @@ public class ApiCallService {
         headers.add("appsecret", APP_SECRET);
         headers.add("tr_id", "FHKST03010200");
 
+        //FID_COND_MRKT_DIV_CODE : 시장 분류 코드 (J : 주식)
+        //FID_INPUT_ISCD : 종목번호 
+        //FID_ETC_CLS_CODE : 기타 구분 코드("")
+        //FID_INPUT_HOUR_1 : "123000" 입력 시 12시 30분 이전부터 1분 간격으로 조회
+        //FID_PW_DATA_INCU_YN : N : 당일데이터만 조회  Y : 이후데이터도 조회
+
         String uri = STOCKHOUR_URL + "?FID_COND_MRKT_DIV_CODE=" + FID_COND_MRKT_DIV_CODE + "&FID_INPUT_ISCD=" + stockCode +  "&FID_ETC_CLS_CODE=" + FID_ETC_CLS_CODE
                 + "&FID_INPUT_HOUR_1=" + strHour + "&FID_PW_DATA_INCU_YN=" +  FID_PW_DATA_INCU_YN;
 
@@ -118,7 +128,10 @@ public class ApiCallService {
 
         LocalDateTime localDateTime = LocalDateTime.now();
 
-        String strMonth = Time.strMonth(localDateTime);
+        // String strMonth = Time.strMonth(localDateTime);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM01");
+        String strDate = localDateTime.format(formatter);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + token);
@@ -126,8 +139,14 @@ public class ApiCallService {
         headers.add("appsecret", APP_SECRET);
         headers.add("tr_id", "FHKUP03500100");
 
+        //FID_COND_MRKT_DIV_CODE : 시장 분류 코드 (U)
+        //FID_INPUT_ISCD : (0001 : 종합 0002 : 대형주 )
+        //FID_INPUT_DATE_1 :조회 시작일자 (ex. 20220501)
+        //FID_INPUT_DATE_2 : 조회 종료일자 (ex. 20220530)
+        //FID_PERIOD_DIV_CODE : D:일봉, W:주봉, M:월봉, Y:년봉
+
         String uri = KOSPI_URL + "?FID_COND_MRKT_DIV_CODE=U&FID_INPUT_ISCD=" + "0001" + "&FID_INPUT_DATE_1=" + "20230101"
-                +"&FID_INPUT_DATE_2=" + strMonth + "&FID_PERIOD_DIV_CODE=" + "M";
+                +"&FID_INPUT_DATE_2=" + strDate + "&FID_PERIOD_DIV_CODE=" + "M";
 
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
 

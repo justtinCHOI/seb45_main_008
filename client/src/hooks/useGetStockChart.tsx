@@ -13,16 +13,16 @@ const indexColor = "#4479c2";
 const averageLineMinute = 10;
 
 const useGetStockChart = (companyId: number) => {
-  const { stockPrice } = useGetStockData(companyId);
-  const { stockInfo } = useGetStockInfo(companyId);
-  const [chartData, setChartData] = useState<StockProps[]>([]);
+  const { stockPrice } = useGetStockData(companyId);//봉 420개
+  const { stockInfo } = useGetStockInfo(companyId);//회사정보
   const [corpName, setCorpName] = useState("");
+  const [chartData, setChartData] = useState<StockProps[]>([]); //StockProps[] : 봉 배열
 
   // 비교차트 설정 (10일 기준, 이동 평균선)
-  const [compareName, setCompareName] = useState("");
-  const [compareChart, setCompare] = useState<any>(undefined);
   const compareId = useSelector((state: StateProps) => state.compareChart);
   const { stockInfo: compareInfo } = useGetStockInfo(compareId);
+  const [compareName, setCompareName] = useState("");
+  const [compareChart, setCompare] = useState<any>(undefined);
 
   const url = "http://ec2-13-125-246-160.ap-northeast-2.compute.amazonaws.com:8080/companies/charts/";
   const averageDay = 10;

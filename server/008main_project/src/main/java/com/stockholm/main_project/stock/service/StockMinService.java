@@ -80,7 +80,7 @@ public class StockMinService {
 
         return stockMinList;
     }
-
+    //StockMin 420개 리스트 -> StockMinResponseDto 420개 리스트
     public List<StockMinResponseDto> getRecent420StockMin(long companyId) {
         List<StockMin> stockMinList = stockMinRepository.findTop420ByCompanyIdOrderByStockMinIdDesc(companyId);
 

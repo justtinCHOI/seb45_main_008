@@ -39,6 +39,7 @@ public class Member extends Auditable {
     @Column(length = 20, nullable = false)
     private MemberStatus memberStatus = MemberStatus.MEMBER_ACTIVE;
 
+    //즉시 로딩 LAZY와 순서가 반대
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 

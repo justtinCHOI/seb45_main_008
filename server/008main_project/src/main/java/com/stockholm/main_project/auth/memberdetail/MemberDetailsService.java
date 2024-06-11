@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Optional;
-
+//데이터베이스에서 사용자 정보를 조회하고, 권한을 설정하며, 사용자 계정의 상태를 관리
 @Component
 public class MemberDetailsService implements UserDetailsService {
     private final MemberRepository memberRepository;
@@ -30,6 +30,7 @@ public class MemberDetailsService implements UserDetailsService {
         return new MemberDetails(findMember);
     }
 
+    //Spring Security에서 사용자 정보를 다루기 위한 객체를 정의
     private final class MemberDetails extends Member implements UserDetails {
 
         MemberDetails(Member member) {
@@ -51,22 +52,22 @@ public class MemberDetailsService implements UserDetailsService {
 
         @Override
         public boolean isAccountNonExpired() {
-            return true;
+            return true;//계정이 활성 상태
         }
 
         @Override
         public boolean isAccountNonLocked() {
-            return true;
+            return true;//계정이 활성 상태
         }
 
         @Override
         public boolean isCredentialsNonExpired() {
-            return true;
+            return true;//계정이 활성 상태
         }
 
         @Override
         public boolean isEnabled() {
-            return true;
+            return true;//계정이 활성 상태
         }
     }
 }

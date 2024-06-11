@@ -34,6 +34,10 @@ type StarDataItem = {
 
 type StarData = StarDataItem[];
 
+const useGetStar = () => {
+  return useQuery<StarData, Error>('starData', fetchStarData);
+};
+
 const fetchStarData = async (): Promise<StarData> => {
   const accessToken = localStorage.getItem('accessToken');
   const res = await fetch('http://ec2-13-125-246-160.ap-northeast-2.compute.amazonaws.com:8080/stars', {
@@ -50,8 +54,6 @@ const fetchStarData = async (): Promise<StarData> => {
   return res.json();
 };
 
-const useGetStar = () => {
-  return useQuery<StarData, Error>('starData', fetchStarData);
-};
+
 
 export default useGetStar;

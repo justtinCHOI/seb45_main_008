@@ -8,17 +8,18 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
+@Component 
 public class CustomAuthorityUtils {
 
     private final List<GrantedAuthority> USER_ROLES = AuthorityUtils.createAuthorityList("ROLE_USER");
     private final List<String> USER_ROLES_STRING = List.of("USER");
 
+    // List.of("USER"); 반환
     public List<String> createRoles(String email) {
-
         return USER_ROLES_STRING;
     }
-
+    
+    //List<role> -> List<GrantedAuthority>
     public List<GrantedAuthority> createAuthorities(List<String> roles) {
         List<GrantedAuthority> authorities = roles.stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role))

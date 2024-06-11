@@ -18,7 +18,7 @@ public class Star extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long starId;
-
+    //member 또는 company 접근하는 시점에 로딩
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     @OnDelete(action = OnDeleteAction.CASCADE)

@@ -11,18 +11,28 @@ import javax.mail.internet.MimeMessage;
 import java.util.Random;
 
 @Service
-public class EmailServiceImpl implements EmailService{
+public class EmailServiceImpl implements EmailService{ 
 
     @Autowired
     JavaMailSender emailSender;
 
-    public static final String ePw = createKey();
+    public static final String ePw = createKey(); //인증 번호 
+
+    @Override
+    public String sendSimpleMessage(String to)throws Exception {
+        MimeMessage message = createMessage(to);
+        try{//예외처리
+            emailSender.send(message);
+        }catch(MailException es){
+            es.printStackTrace();
+            throw new IllegalArgumentException();
+        }
+        return ePw;
+    }
 
     private MimeMessage createMessage(String to)throws Exception{
-        System.out.println("보내는 대상 : "+ to);
-        System.out.println("인증 번호 : "+ePw);
-        MimeMessage  message = emailSender.createMimeMessage();
 
+        MimeMessage  message = emailSender.createMimeMessage();
         message.addRecipients(MimeMessage.RecipientType.TO, to);//보내는 대상
         message.setSubject("이메일 인증 테스트");//제목
 
@@ -70,16 +80,6 @@ public class EmailServiceImpl implements EmailService{
         }
         return key.toString();
     }
-    @Override
-    public String sendSimpleMessage(String to)throws Exception {
-        // TODO Auto-generated method stub
-        MimeMessage message = createMessage(to);
-        try{//예외처리
-            emailSender.send(message);
-        }catch(MailException es){
-            es.printStackTrace();
-            throw new IllegalArgumentException();
-        }
-        return ePw;
-    }
+
+   
 }

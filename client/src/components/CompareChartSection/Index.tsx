@@ -5,8 +5,8 @@ import CompareList from "./CompareList";
 
 const titleText: string = "비교차트";
 
-const CompareChartSection = () => {
-  return (
+const CompareChartSection: React.FC = () => {
+  return ( 
     <Container>
       <UpperBar>
         <Title>{titleText}</Title>

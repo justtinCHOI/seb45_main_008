@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolationException;
 
-@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionAdvice {
 
@@ -40,8 +39,6 @@ public class GlobalExceptionAdvice {
     //추가 작업 필요
     @ExceptionHandler
     public ResponseEntity handleBusinessLogicException(BusinessLogicException e) {
-        System.out.println(e.getExceptionCode().getStatus());
-        System.out.println(e.getMessage());
         final ErrorResponse response = ErrorResponse.of(e.getExceptionCode());
         return new ResponseEntity<>(response, HttpStatus.valueOf(e.getExceptionCode().getStatus()));
     }

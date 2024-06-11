@@ -44,7 +44,8 @@ const EmailLoginModal: React.FC<EmailLoginModalProps> = ({ onClose, onLogin, onS
 
   const handleLoginClick = async () => {
     try {
-      const response = await axios.post("http://ec2-13-125-246-160.ap-northeast-2.compute.amazonaws.com:8080/members/login", { email, password }, { validateStatus: (status) => status >= 200 && status < 600 });
+      const response = await axios.post("http://ec2-13-125-246-160.ap-northeast-2.compute.amazonaws.com:8080/members/login",
+                       { email, password }, { validateStatus: (status) => status >= 200 && status < 600 });
 
       if (response.status === 200) {
         const accessToken = response.headers["authorization"];

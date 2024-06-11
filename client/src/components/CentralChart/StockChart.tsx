@@ -13,7 +13,7 @@ const errorText = "화면을 불러올 수 없습니다";
 const StockChart = () => {
   const companyId = useSelector((state: StateProps) => state.companyId);
 
-  const { stockPriceLoading, stockPriceError } = useGetStockData(companyId);
+  const { stockPriceLoading, stockPriceError } = useGetStockData(companyId);//봉 420개를 가져올 수 있는데 왜 안씀
   const { options, chartStyle } = useGetStockChart(companyId);
 
   if (stockPriceLoading) {

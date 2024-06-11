@@ -12,5 +12,4 @@ public interface ApiMapper {
     StockAsBi stockAsBiOutput1ToStockAsBi(StockasbiDataDto.StockAsBiOutput1 stock);
     StockMin stockMinOutput2ToStockMin(StockMinDto.StockMinOutput2 stock);
     StockInf stockMinOutput1ToStockInf(StockMinDto.StockMinOutput1 stock);
-
 }

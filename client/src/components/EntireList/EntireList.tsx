@@ -23,7 +23,10 @@ import useGetCash from "../../hooks/useGetCash";
 const holdingAmountText = "보유 현금";
 const amountUnit = "원";
 
-const EntireList: React.FC<EntireListProps> = ({ currentListType, onChangeListType }) => {
+const EntireList: React.FC<EntireListProps> = ({
+  currentListType,
+  onChangeListType,
+}) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [showChangePrice, setShowChangePrice] = useState(false);
 
@@ -53,7 +56,12 @@ const EntireList: React.FC<EntireListProps> = ({ currentListType, onChangeListTy
   return (
     <WatchListContainer>
       <Header1Container>
-        <Header currentListType={currentListType} onChangeListType={onChangeListType} isMenuOpen={isMenuOpen} setMenuOpen={setMenuOpen} />
+        <Header
+          currentListType={currentListType}
+          onChangeListType={onChangeListType}
+          isMenuOpen={isMenuOpen}
+          setMenuOpen={setMenuOpen}
+        />
       </Header1Container>
       {/* <Divider /> */}
       <Header2Container isLogin={isLogin}>
@@ -71,7 +79,20 @@ const EntireList: React.FC<EntireListProps> = ({ currentListType, onChangeListTy
       </Header2Container>
       {/* <Divider /> */}
       <StockList>
-        {isLoading ? <div></div> : isError ? <div>Error fetching data</div> : companiesList.map((company) => <StockItem key={company.companyId} company={company} setShowChangePrice={setShowChangePrice} showChangePrice={showChangePrice} />)}
+        {isLoading ? (
+          <div></div>
+        ) : isError ? (
+          <div>Error fetching data</div>
+        ) : (
+          companiesList.map((company) => (
+            <StockItem
+              key={company.companyId}
+              company={company}
+              setShowChangePrice={setShowChangePrice}
+              showChangePrice={showChangePrice}
+            />
+          ))
+        )}
       </StockList>
     </WatchListContainer>
   );

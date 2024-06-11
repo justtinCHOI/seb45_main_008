@@ -25,6 +25,13 @@ const StockSearchComponent: React.FC = () => {
     setSearchWord(e.target.value);
   };
 
+  const handlePressEnterToSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.code === "Enter" && e.nativeEvent.isComposing === false) {
+      handleSearchCompany();
+      setSearchWord("");
+    }
+  };
+
   const handleSearchCompany = () => {
     let searchResult: string = noExistCompany;
 
@@ -46,13 +53,6 @@ const StockSearchComponent: React.FC = () => {
         autoClose: 1500,
       });
       return;
-    }
-  };
-
-  const handlePressEnterToSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.code === "Enter" && e.nativeEvent.isComposing === false) {
-      handleSearchCompany();
-      setSearchWord("");
     }
   };
 

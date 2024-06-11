@@ -9,11 +9,6 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 @EnableWebSocketMessageBroker
 public class StompConfig implements WebSocketMessageBrokerConfigurer {
-    @Override
-    public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws").withSockJS();
-        registry.addEndpoint("/ws").setAllowedOrigins("*");
-    }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
@@ -22,4 +17,11 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
         // 메세지 발행 요청 url -> 메세지 보낼 때
         registry.setApplicationDestinationPrefixes("/pub");
     }
+
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/ws").withSockJS();
+        registry.addEndpoint("/ws").setAllowedOrigins("*");
+    }
+
 }

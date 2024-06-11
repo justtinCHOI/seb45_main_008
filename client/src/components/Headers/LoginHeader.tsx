@@ -13,7 +13,7 @@ const LoginHeader: React.FC<LoginHeaderProps> = () => {
   const [isProfileModalOpen, setProfileModalOpen] = useState(false); // 프로필 모달 상태
 
   const logoutText = "로그아웃";
-  const dispatch = useDispatch(); //
+  const dispatch = useDispatch();
 
   const { data: memberInfo } = useGetMemberInfo(); // use the hook here
   // const userName = memberInfo?.name; // retrieve the user's name

@@ -6,8 +6,6 @@ import useGetCash from '../../hooks/useGetCash';
 import useGetCashId from '../../hooks/useGetCashId';
 import { setCashId, setMoney } from '../../reducer/cash/cashSlice';
 
-
-
 const CashModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
     // 상태 및 변수 초기화

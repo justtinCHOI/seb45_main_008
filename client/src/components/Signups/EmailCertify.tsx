@@ -95,7 +95,7 @@ const EmailVerificationModal: React.FC<EmailVerificationModalProps> = ({ onClose
         <Input type="text" placeholder={strings.codeHintText} value={verificationCode} onChange={handleVerificationCodeChange} onKeyDown={handleKeyPress}/>
         <HintText>{strings.codeHintText}</HintText>
         <TermsCheckbox>
-          <input type="checkbox" id="terms" onChange={handleAgreementChange} />
+          <input type="checkbox" id="terms" onChange={handleAgreementChange}/>
           <label htmlFor="terms">{strings.termsText}</label>
         </TermsCheckbox>
 

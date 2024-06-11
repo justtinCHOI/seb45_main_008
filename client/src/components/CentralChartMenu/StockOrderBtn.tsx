@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 import { stockOrderOpen } from "../../reducer/StockOrderSet-Reducer";
 import { orderTypeBuying, orderTypeSelling } from "../../reducer/StockOrderType-Reducer";
 
+// click시 stockOrderType = 매수 -> true , 매도 -> false
 const StockOrderBtn = (props: OwnProps) => {
   const { type } = props;
   const buttonText: string = type === "buying" ? "매수" : "매도";

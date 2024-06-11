@@ -24,16 +24,16 @@ public class AccountController {
 
 
 
-    @Operation(summary = "Email 발송", description = "Email 검증을 위한 코드가 POST됩니다.", tags = { "Email" })
+    @Operation(summary = "Email 발송", description = "Email 검증을 위한 코드가 POST됩니다.", tags = { "Email" })// API 문서화
     @ApiResponse(responseCode = "200", description = "OK",
             content = @Content(schema = @Schema(implementation = SendEmailPostDto.class),
-                    examples = @ExampleObject(value = "4148WEAW1")))
+                    examples = @ExampleObject(value = "4148WEAW1"))) //API 응답에 대한 정보
     @ApiResponse(responseCode = "400", description = "BAD REQUEST")
     @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     @PostMapping("/email/send")
     public String emailSend(@Schema(implementation = SendEmailPostDto.class) @RequestBody SendEmailPostDto sendEmailPostDto) throws Exception {
 
-        String confirm = emailService.sendSimpleMessage(sendEmailPostDto.getEmail());
+        String confirm = emailService.sendSimpleMessage(sendEmailPostDto.getEmail());//이메일로 인증키를 만들어서 전달.
 
         return confirm;
     }

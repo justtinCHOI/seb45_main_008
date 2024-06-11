@@ -7,8 +7,6 @@ const useGetStockHolds = () => {
   return { stockHolds: data, stockHoldsLoading: isLoading, stockHoldsError: error };
 };
 
-export default useGetStockHolds;
-
 // 서버에서 StockHolds 목록 fetch 하는 함수
 const getStockHolds = async () => {
   const accessToken = localStorage.getItem('accessToken');  // 로컬 스토리지에서 토큰 가져오기
@@ -21,3 +19,5 @@ const getStockHolds = async () => {
 
   return stockHoldsList;
 };
+
+export default useGetStockHolds;

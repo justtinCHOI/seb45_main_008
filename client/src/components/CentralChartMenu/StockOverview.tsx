@@ -24,7 +24,8 @@ const marketType: string = "코스피";
 const volumeText: string = "거래량";
 const valueText: string = "거래대금";
 
-// styled-component 수정 및 미디어 쿼리 적용
+//stockInfo -> 로고, 현주가, 대비율, 대비, 거래량, 거래대금
+//priceChageRate -> 빨간색 || 파란색
 const StockOverview = () => {
   const companyId = useSelector((state: StateProps) => state.companyId);
   const { stockInfo, stockInfoLoading, stockInfoError } = useGetStockInfo(companyId);
@@ -48,7 +49,7 @@ const StockOverview = () => {
     LG전자: LGelec,
     기아: kia,
   };
-  // 그리고 나서, 이 `logos` 객체를 사용하여 기업명에 따라 적절한 로고를 선택할 수 있습니다.
+  // `logos` + 기업명 ->  로고 없으면 dummyLogo
   const companyLogo = corpName ? logos[corpName] || dummyLogo : dummyLogo;
   if (!corpName) {
     return null; // 혹은 다른 적절한 렌더링을 반환
@@ -63,14 +64,14 @@ const StockOverview = () => {
   }
 
   const stockCode = stockInfo.code;
-  const stockPrice = parseInt(stockInfo.stockInfResponseDto.stck_prpr, 10).toLocaleString();
-  const priceChageRate = parseFloat(stockInfo.stockInfResponseDto.prdy_ctrt);
+  const stockPrice = parseInt(stockInfo.stockInfResponseDto.stck_prpr, 10).toLocaleString(); // 현재 주가 String -> int -> ,000,000
+  const priceChageRate = parseFloat(stockInfo.stockInfResponseDto.prdy_ctrt);  // 전일 대비율
   const chageDirection = priceChageRate > 0 ? "▲" : "▼";
-  const priceChageAmount = Math.abs(parseInt(stockInfo.stockInfResponseDto.prdy_vrss, 10)).toLocaleString();
-  const transactionVolume = parseInt(stockInfo.stockInfResponseDto.acml_vol, 10).toLocaleString();
+  const priceChageAmount = Math.abs(parseInt(stockInfo.stockInfResponseDto.prdy_vrss, 10)).toLocaleString();  //전일 대비 주가
+  const transactionVolume = parseInt(stockInfo.stockInfResponseDto.acml_vol, 10).toLocaleString(); //누적 거래량
 
-  // 총 거래대금 계산
-  const amount = parseInt(stockInfo.stockInfResponseDto.acml_tr_pbmn, 10);
+  // 총 거래대금 -> 000억000만 
+  const amount = parseInt(stockInfo.stockInfResponseDto.acml_tr_pbmn, 10); 
   const [billions, tenThousands] = [Math.floor(amount / 100000000), Math.floor((amount % 100000000) / 10000)];
   const transactionValue = `${billions.toLocaleString()}억 ${tenThousands.toLocaleString()}만`;
 

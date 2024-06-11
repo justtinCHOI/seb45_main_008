@@ -61,7 +61,7 @@ const EmailSignupModal: React.FC<EmailSignupModalProps> = ({ onClose, onRequestV
       if (response.status === 200) {
         dispatch(setEmailForVerification(email));
         onRequestVerification(email);
-        setEmailSent(true);  // 이 부분 추가
+        setEmailSent(true); 
       } else if (response.status === 400) {
         setErrorMessage(response.data.message);
       } else if (response.status === 500) {

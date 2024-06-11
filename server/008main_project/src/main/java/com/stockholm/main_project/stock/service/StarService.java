@@ -23,6 +23,7 @@ public class StarService {
         this.stockMapper = stockMapper;
     }
 
+    //member + companyId -> 찜 생성, 저장
     public void saveStar(Member member, long companyId) {
         Star star = new Star();
 
@@ -31,17 +32,16 @@ public class StarService {
 
         starRepository.save(star);
     }
-
+    //member + companyId -> 찜 조회, 삭제
     public void deleteStar(Member member, long companyId) {
         Star star = starRepository.findByMember_MemberIdAndCompanyCompanyId(member.getMemberId(), companyId);
 
         starRepository.delete(star);
     }
-
+    //회원의 모든 찜 DTO 반환
     public List<StarResponseDto> getStarResponseDtoList(Member member) {
         List<Star> stars = starRepository.findAllByMember_MemberId(member.getMemberId());
         List<StarResponseDto> starResponseDtos =  stockMapper.starsToStarResponseDtos(stars);
-
         return starResponseDtos;
     }
 }

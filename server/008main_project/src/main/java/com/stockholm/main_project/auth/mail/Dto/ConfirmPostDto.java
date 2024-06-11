@@ -7,7 +7,8 @@ import lombok.Setter;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-
+//사용자가 이메일 인증을 요청할 때 
+//이메일 주소와 인증 코드를 입력하여 이 DTO를 통해 서버로 전송
 @Getter
 @Setter
 public class ConfirmPostDto {
@@ -18,5 +19,5 @@ public class ConfirmPostDto {
     @Schema(description = "Email", defaultValue = "Test@example.com")
     private String email;
     @Schema(description = "승인 코드", defaultValue = "4148WEAW1")
-    private String code;
+    private String code; //OpenAPI(Swagger) 문서화를 위해 사용됩니다. 
 }

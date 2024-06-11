@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useQuery, useQueryClient } from "react-query";
 import axios from "axios";
 
+////useGetStockData : 현재시각에 가장 30분 단위에 패칭을 하고 그후 10분단위로 AXIOS를 호출로 회사 주가 정보 가져오기
 const useGetStockData = (companyId: number) => {
   // 🟢 기존 로직
   const [autoRefetch, setAutoRefetch] = useState(false);
@@ -42,21 +43,6 @@ const useGetStockData = (companyId: number) => {
       queryClient.invalidateQueries("orderRecord");
     },
   });
-  // 🟢 기존 로직
-
-  // 🔴 테스트 로직
-  // const queryClient = useQueryClient();
-
-  // const { data, isLoading, error } = useQuery(`chartData`, () => getChartData(companyId), {
-  //   enabled: true,
-  //   refetchInterval: 1000 * 10, // 정각 혹은 30분에 맞춰서 10분 마다 데이터 리패칭
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries("cash");
-  //     queryClient.invalidateQueries("holdingStock");
-  //     queryClient.invalidateQueries("orderRecord");
-  //   },
-  // });
-  // 🔴 테스트 로직
 
   return { stockPrice: data, stockPriceLoading: isLoading, stockPriceError: error };
 };

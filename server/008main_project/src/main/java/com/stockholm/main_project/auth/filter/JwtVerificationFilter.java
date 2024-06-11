@@ -33,20 +33,23 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         this.memberService = memberService;
     }
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        Map<String, Object> claims = verifyJws(request);
-        setAuthenticationToContext(claims);
-        filterChain.doFilter(request, response);
-    }
 
-    @Override
+    @Override //권한이 없으면 다음 필터로 가지 마라.
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String authorization = request.getHeader("Authorization");
 
         return authorization == null || !authorization.startsWith("Bearer");
     }
 
+
+    @Override 
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        Map<String, Object> claims = verifyJws(request);//토큰으로 클레임 얻어오기
+        setAuthenticationToContext(claims);//클레임으로 권한객체 생성
+        filterChain.doFilter(request, response); //다음 필터
+    }
+
+  
     private Map<String, Object> verifyJws(HttpServletRequest request) {
         String jws = request.getHeader("Authorization").replace("Bearer ", "");
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());

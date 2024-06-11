@@ -13,7 +13,7 @@ const UpperMenuBar = () => {
         {/* <BookmarkBtn /> */}
         <StockOrderBtn type="buying" />
         <StockOrderBtn type="selling" />
-        <ExpandScreenBtn direction="right" />
+        <ExpandScreenBtn direction="right"/>
       </div>
       {/* <div className="SecondLine">
         <CompareChartBtn />

@@ -26,13 +26,11 @@ import java.util.Map;
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final JwtTokenizer jwtTokenizer;
-
     private final CustomAuthorityUtils authorityUtils;
     private final MemberService memberService;
 
     @Autowired
     public OAuth2AuthenticationSuccessHandler(JwtTokenizer jwtTokenizer, CustomAuthorityUtils authorityUtils, MemberService memberService) {
-
         this.jwtTokenizer = jwtTokenizer;
         this.authorityUtils = authorityUtils;
         this.memberService = memberService;
@@ -40,10 +38,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        var oAuth2User = (OAuth2User)authentication.getPrincipal();
+        var oAuth2User = (OAuth2User) authentication.getPrincipal();
 
+        // OAuth2User로부터 이메일 정보 획득
         String email = String.valueOf(oAuth2User.getAttributes().get("email"));
 
+        // 이메일을 기반으로 권한 생성
         List<String> authorities = authorityUtils.createRoles(email);
 
         // 액세스 토큰 및 리프레시 토큰 생성
@@ -54,56 +54,66 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         response.addHeader("Authorization", "Bearer " + accessToken);
         response.addHeader("Refresh-Token", refreshToken);
 
-
+        // 리다이렉트 진행
         redirect(request, response, email, authorities);
     }
 
     private void redirect(HttpServletRequest request, HttpServletResponse response, String username, List<String> authorities) throws IOException {
+        // 액세스 토큰 및 리프레시 토큰 생성
         String accessToken = delegateAccessToken(username, authorities);
         String refreshToken = delegateRefreshToken(username);
 
+        // URI 생성
         String uri = createURI(accessToken, refreshToken).toString();
+        // 리다이렉트 진행
         getRedirectStrategy().sendRedirect(request, response, uri);
     }
 
+    // 액세스 토큰 생성
     private String delegateAccessToken(String username, List<String> authorities) {
         // 사용자의 이메일로 Member ID를 가져옴
         int memberId = memberService.findMemberIdByEmail(username);
 
+        // 클레임 설정
         Map<String, Object> claims = new HashMap<>();
         claims.put("email", username);
         claims.put("roles", authorities);
         claims.put("memberId", memberId); // Member ID를 클레임에 추가
 
+        // 토큰 만료 시간 설정
         String subject = username;
         Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
 
+        // Secret Key 인코딩
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
 
+        // 액세스 토큰 생성
         String accessToken = jwtTokenizer.generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
 
         return accessToken;
     }
 
+    // 리프레시 토큰 생성
     private String delegateRefreshToken(String username) {
-
-
+        // 토큰 subject 설정
         String subject = username;
+        // 토큰 만료 시간 설정
         Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getRefreshTokenExpirationMinutes());
+        // Secret Key 인코딩
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-
+        // 리프레시 토큰 생성
         String refreshToken = jwtTokenizer.generateRefreshToken(subject, expiration, base64EncodedSecretKey);
 
         return refreshToken;
     }
 
+    // 리다이렉트할 URI 생성
     private URI createURI(String accessToken, String refreshToken) {
-
+        // 쿼리 파라미터 설정
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
         queryParams.add("access_token", accessToken);
         queryParams.add("refresh_token", refreshToken);
-
-//        return UriComponentsBuilder
+        //        return UriComponentsBuilder
 //                .newInstance()
 //                .scheme("http")
 //                .host("localhost")
@@ -113,14 +123,15 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 //                .build()
 //                .toUri();
 //    }
-       return UriComponentsBuilder
-               .newInstance()
-               .scheme("http")
+
+        // URI 생성
+        return UriComponentsBuilder
+                .newInstance()
+                .scheme("http")
                 .host("seb008stockholm.s3-website.ap-northeast-2.amazonaws.com")
-//                .port(8080)
                 .queryParams(queryParams)
                 .path("/")
                 .build()
                 .toUri();
-   }
+    }
 }

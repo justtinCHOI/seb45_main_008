@@ -13,18 +13,33 @@ import { useSelector } from "react-redux";
 const evalutationProfitText = "평가 수익금";
 const profitUnit = "원";
 
-const HoldingList: React.FC<WatchListProps> = ({ currentListType, onChangeListType }) => {
+const HoldingList: React.FC<WatchListProps> = ({
+  currentListType,
+  onChangeListType,
+}) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [showChangePrice, setShowChangePrice] = useState(false);
 
-  const { stockHolds, stockHoldsLoading: isLoading, stockHoldsError: isError } = useGetStockHolds();
-  const { data: companyData, isLoading: isCompanyDataLoading, isError: isCompanyDataError } = useCompanyData(1, 14);
+  const {
+    stockHolds,
+    stockHoldsLoading: isLoading,
+    stockHoldsError: isError,
+  } = useGetStockHolds();
+  const {
+    data: companyData,
+    isLoading: isCompanyDataLoading,
+    isError: isCompanyDataError,
+  } = useCompanyData(1, 14);
 
   // 모든 stockReturn의 합을 계산합니다.
   let totalEvaluationProfit = 0;
 
   if (Array.isArray(stockHolds) && stockHolds.length > 0) {
-    totalEvaluationProfit = stockHolds.reduce((sum: number, stockHold: StockItemProps["stockData"]) => sum + stockHold.stockReturn, 0);
+    totalEvaluationProfit = stockHolds.reduce(
+      (sum: number, stockHold: StockItemProps["stockData"]) =>
+        sum + stockHold.stockReturn,
+      0
+    );
   }
 
   // if (stockHolds) {
@@ -40,7 +55,12 @@ const HoldingList: React.FC<WatchListProps> = ({ currentListType, onChangeListTy
   return (
     <WatchListContainer>
       <Header1Container>
-        <Header currentListType={currentListType} onChangeListType={onChangeListType} isMenuOpen={isMenuOpen} setMenuOpen={setMenuOpen} />
+        <Header
+          currentListType={currentListType}
+          onChangeListType={onChangeListType}
+          isMenuOpen={isMenuOpen}
+          setMenuOpen={setMenuOpen}
+        />
       </Header1Container>
       {/* <Divider /> */}
       <Header2Container>
@@ -63,9 +83,21 @@ const HoldingList: React.FC<WatchListProps> = ({ currentListType, onChangeListTy
           Array.isArray(stockHolds) &&
           stockHolds.length > 0 && // 여기에 조건을 추가합니다
           stockHolds.map((stockHold: StockItemProps["stockData"]) => {
-            const matchedCompany = companyData ? companyData.find((company) => company.companyId === stockHold.companyId) : undefined;
+            const matchedCompany = companyData
+              ? companyData.find(
+                  (company) => company.companyId === stockHold.companyId
+                )
+              : undefined;
 
-            return matchedCompany ? <StockItem key={stockHold.companyId} stockData={stockHold} companyData={matchedCompany} setShowChangePrice={setShowChangePrice} showChangePrice={showChangePrice} /> : null;
+            return matchedCompany ? (
+              <StockItem
+                key={stockHold.companyId}
+                stockData={stockHold}
+                companyData={matchedCompany}
+                setShowChangePrice={setShowChangePrice}
+                showChangePrice={showChangePrice}
+              />
+            ) : null;
           })
         )}
       </StockList>
@@ -121,7 +153,8 @@ const EvaluationProfit = styled.div<{ profit: number }>`
   gap: 6.5px;
   padding-left: 14px;
   text-align: "center";
-  color: ${(props) => (props.profit === 0 ? "#000" : props.profit > 0 ? "#e22926" : "#2679ed")};
+  color: ${(props) =>
+    props.profit === 0 ? "#000" : props.profit > 0 ? "#e22926" : "#2679ed"};
   border-bottom: 1px solid black;
 
   .profitText {

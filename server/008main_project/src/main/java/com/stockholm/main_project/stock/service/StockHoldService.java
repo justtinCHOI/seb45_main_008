@@ -27,7 +27,6 @@ public class StockHoldService {
     private final StockOrderRepository stockOrderRepository;
     private final StockMapper stockMapper;
 
-
     public StockHoldService(StockHoldRepository stockHoldRepository, MemberRepository memberRepository, CompanyRepository companyRepository, StockOrderRepository stockOrderRepository, StockMapper stockMapper) {
         this.stockHoldRepository = stockHoldRepository;
         this.memberRepository = memberRepository;
@@ -37,6 +36,7 @@ public class StockHoldService {
     }
 
     // 없으면 새로운 스톡 홀드를 생성해서 반환해준다
+    //memberId + companyId
     public StockHold checkStockHold(long companyId, long memberId) {
         StockHold stockHold = stockHoldRepository.findByCompanyCompanyIdAndMemberMemberId(companyId, memberId);
         if(stockHold == null) {

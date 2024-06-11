@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import StockSearchComponent from "./StockSearchComponent";
-import Header from "./Header";
-import StockItem from "./StockItem";
-import useCompanyData from "../../hooks/useCompanyData";
+import StockSearchComponent from "./StockSearchComponent.tsx";
+import Header from "./Header.tsx";
+import StockItem from "./StockItem.tsx";
+import useCompanyData from "../../hooks/useCompanyData.ts";
 import useGetStars from "../../hooks/stars/useGetstars.ts"; // useGetStars 훅의 경로를 지정해주세요.
 import { useSelector } from "react-redux";
-import { RootState } from "../../store/config.ts"; 
-import LoginRequestIndicator from "../HoldingList/LoginRequestIndicator.tsx"
+import { RootState } from "../../store/config.ts";
+import LoginRequestIndicator from "../HoldingList/LoginRequestIndicator.tsx";
 
-const WatchList: React.FC<WatchListProps> = ({ currentListType, onChangeListType, openOAuthModal}) => {
+const WatchList: React.FC<WatchListProps> = ({
+  currentListType,
+  onChangeListType,
+  openOAuthModal,
+}) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const loginStatus = useSelector((state: RootState) => state.login);
 
@@ -21,23 +25,28 @@ const WatchList: React.FC<WatchListProps> = ({ currentListType, onChangeListType
   const [starredCompanyIds, setStarredCompanyIds] = useState<number[]>([]);
   useEffect(() => {
     if (starredData) {
-      
-      setStarredCompanyIds(starredData.map(item => item.companyResponseDto.companyId));
+      setStarredCompanyIds(
+        starredData.map((item) => item.companyResponseDto.companyId)
+      );
     }
   }, [starredData]);
 
-  useEffect(() => {
-
-  }, [starredCompanyIds]);
+  useEffect(() => {}, [starredCompanyIds]);
 
   const handleCompanyDelete = (deletedCompanyId: number) => {
-
-    setStarredCompanyIds(prevState => prevState.filter(id => id !== deletedCompanyId));
+    setStarredCompanyIds((prevState) =>
+      prevState.filter((id) => id !== deletedCompanyId)
+    );
   };
   return (
     <WatchListContainer>
       <Header1Container>
-        <Header currentListType={currentListType} onChangeListType={onChangeListType} isMenuOpen={isMenuOpen} setMenuOpen={setMenuOpen} />
+        <Header
+          currentListType={currentListType}
+          onChangeListType={onChangeListType}
+          isMenuOpen={isMenuOpen}
+          setMenuOpen={setMenuOpen}
+        />
       </Header1Container>
       <Divider />
       <Header2Container>
@@ -50,7 +59,15 @@ const WatchList: React.FC<WatchListProps> = ({ currentListType, onChangeListType
         ) : isError ? (
           <div>Error fetching data</div>
         ) : loginStatus === 1 ? (
-          companiesList.filter((company) => starredCompanyIds.includes(company.companyId)).map((company) => <StockItem key={company.companyId} company={company} onDelete={handleCompanyDelete} />)
+          companiesList
+            .filter((company) => starredCompanyIds.includes(company.companyId))
+            .map((company) => (
+              <StockItem
+                key={company.companyId}
+                company={company}
+                onDelete={handleCompanyDelete}
+              />
+            ))
         ) : (
           <LoginRequestIndicator openOAuthModal={openOAuthModal} />
         )}
@@ -62,7 +79,7 @@ const WatchList: React.FC<WatchListProps> = ({ currentListType, onChangeListType
 type WatchListProps = {
   currentListType: "전체종목" | "관심종목" | "보유종목";
   onChangeListType: (type: "전체종목" | "관심종목" | "보유종목") => void;
-  openOAuthModal: () => void;  // Add this line
+  openOAuthModal: () => void; // Add this line
 };
 
 const WatchListContainer = styled.div`

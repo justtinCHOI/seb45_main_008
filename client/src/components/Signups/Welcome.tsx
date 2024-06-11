@@ -30,9 +30,6 @@ const Welcome: React.FC<WelcomeProps> = ({ onClose }) => {
     return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
   };
 
-
-
-
   return (
     <ModalBackground onKeyDown={handleKeyPress} tabIndex={0}>
       <ModalContainer>

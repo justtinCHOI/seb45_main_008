@@ -23,12 +23,13 @@ public class CompanyService {
         this.apiMapper = apiMapper;
     }
 
-    // 특정 회사  리턴
+    //code -> Company
     public Company findCompanyByCode(String stockCode) {
         Company company = companyRepository.findByCode(stockCode);
         return company;
     }
 
+    //autoIncrement -> Company
     public Company findCompanyById(long companyId) {
         Company company = companyRepository.findByCompanyId(companyId);
         return company;
@@ -57,6 +58,7 @@ public class CompanyService {
 
     }
 
+    //회사들의 의 korName, code를 채우고 데이터베이스에 저장
     public void fillCompaines() throws InterruptedException {
         List<String> korName = List.of("삼성전자", "POSCO홀딩스", "셀트리온", "에코프로", "에코프로비엠", "디와이", "쿠쿠홀딩스", "카카오뱅크", "한세엠케이", "KG케미칼", "LG화학", "현대차", "LG전자", "기아");
         List<String> code = List.of("005930", "005490", "068270", "086520", "247540", "013570", "192400", "323410", "069640", "001390", "051910", "005380", "066570", "000270");
@@ -68,9 +70,10 @@ public class CompanyService {
             company.setStockAsBi(new StockAsBi());
 
             StockasbiDataDto stockasbiDataDto = apiCallService.getStockasbiDataFromApi(company.getCode());
-            // mapper로 정리 된 값 받기
+            //StockasbiDataDto -> StockAsBiOutput1 -> StockAsBi
             StockAsBi stockAsBi = apiMapper.stockAsBiOutput1ToStockAsBi(stockasbiDataDto.getOutput1());
-
+            
+            //양방향 관계이므로 서로에 저장
             company.setStockAsBi(stockAsBi);
             stockAsBi.setCompany(company);
 
